@@ -1,4 +1,4 @@
-const ffmpegService = require('../services/ffmpegService');
+const ffmpegService = require('../src/services/ffmpegService');
 
 let currentVideoSource = './samples/lofi.gif';
 let currentAudioSource = './samples/stomach.mp3';
