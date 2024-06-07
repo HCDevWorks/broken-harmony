@@ -40,6 +40,6 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
   setTrack(trackSource: string) {
     const track = Track.create(trackSource);
     this.actualTrack = track;
-    this.notifyAll('audio');
+    this.trackStream.startSource(this.actualTrack.trackSource);
   }
 }
