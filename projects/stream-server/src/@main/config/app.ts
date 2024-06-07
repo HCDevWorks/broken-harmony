@@ -1,15 +1,11 @@
-import streamRoutes from '@/@main/routes/streamRoutes';
-import streamController from '@/controllers/streamController';
+import setupRoutes from '@/@main/config/routes';
 import cors from 'cors';
-import express from 'express';
+import express, { Express } from 'express';
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-app.use('/api', streamRoutes);
-
-streamController.startInitialStreaming();
-
-export default app;
+export default async function setupApp(): Promise<Express> {
+  const app = express();
+  app.use(cors());
+  app.use(express.json());
+  setupRoutes(app);
+  return app;
+}
