@@ -1,4 +1,5 @@
 import Observable from '@/core/Observable';
+import Track from '@/entities/Track';
 import Video from '@/entities/Video';
 
 export type StreamEvents = 'audio' | 'video';
@@ -6,7 +7,7 @@ export type StreamEvents = 'audio' | 'video';
 export default class Stream extends Observable<StreamEvents> {
   constructor(
     private video: Video,
-    private track: string,
+    private track: Track,
     readonly streamUrl: string,
   ) {
     super();
@@ -14,15 +15,16 @@ export default class Stream extends Observable<StreamEvents> {
 
   static create(videoSource: string, trackSource: string, streamUrl: string) {
     const video = Video.create(videoSource);
-    return new Stream(video, trackSource, streamUrl);
+    const track = Track.create(trackSource);
+    return new Stream(video, track, streamUrl);
   }
 
-  getVideo() {
+  getVideoSource() {
     return this.video.videoSource;
   }
 
-  getTrack() {
-    return this.track;
+  getTrackSource() {
+    return this.track.trackSource;
   }
 
   setVideo(videoSource: string) {
@@ -31,7 +33,8 @@ export default class Stream extends Observable<StreamEvents> {
     this.notifyAll('video');
   }
 
-  setTrack(track: string) {
+  setTrack(trackSource: string) {
+    const track = Track.create(trackSource);
     this.track = track;
     this.notifyAll('audio');
   }

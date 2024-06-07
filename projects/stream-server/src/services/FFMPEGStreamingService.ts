@@ -16,9 +16,9 @@ export default class FFMPEGStreamingService implements IStreamingService {
     this.ffmpegProcess = spawn(ffmpegPath, [
     '-re',
     '-stream_loop', '-1',
-    '-i', this.stream.getVideo(),
+    '-i', this.stream.getVideoSource(),
     '-stream_loop', '-1',
-    '-i', this.stream.getTrack(),
+    '-i', this.stream.getTrackSource(),
     '-c:v', 'libx264',
     '-preset', 'veryfast',
     '-tune', 'zerolatency',

@@ -35,10 +35,10 @@ export default class StreamingController {
 
   setAudio(req: Request, res: Response) {
     const { newAudioSource } = req.body;
-    if (newAudioSource) {
+    try {
       this.stream.setTrack(newAudioSource);
       res.send('Audio source changed successfully');
-    } else {
+    } catch {
       res.status(400).send('New audio source is required');
     }
   }
