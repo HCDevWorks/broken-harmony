@@ -1,5 +1,5 @@
 import Stream from '@/entities/Stream';
-import Logger from '@/helpers/Logger';
+import ILogger from '@/helpers/ILogger';
 import IStreamingService from '@/services/IStreamingService';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import ffmpegPath from 'ffmpeg-static';
@@ -7,6 +7,8 @@ import ffmpegPath from 'ffmpeg-static';
 export default class FFMPEGStreamingService implements IStreamingService {
   private ffmpegProcess?: ChildProcessWithoutNullStreams;
   private stream?: Stream;
+
+  constructor(readonly logger: ILogger) {}
 
   start(): ChildProcessWithoutNullStreams {
     if (!this.stream) throw new Error('No stream');
@@ -42,13 +44,13 @@ export default class FFMPEGStreamingService implements IStreamingService {
   ]);
 
     this.ffmpegProcess.stdout.on('data', (data) =>
-      Logger.log(`stdout: ${data}`),
+      this.logger.log(`stdout: ${data}`),
     );
     this.ffmpegProcess.stderr.on('data', (data) =>
-      Logger.error(`stderr: ${data}`),
+      this.logger.error(`stderr: ${data}`),
     );
     this.ffmpegProcess.on('close', (code) =>
-      Logger.log(`ffmpeg process exited with code ${code}`),
+      this.logger.log(`ffmpeg process exited with code ${code}`),
     );
 
     return this.ffmpegProcess;
