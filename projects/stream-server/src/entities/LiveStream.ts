@@ -1,4 +1,4 @@
-import Observable from '@/core/Observable';
+import Observable from '@/core/observer/Observable';
 import Track from '@/entities/Track';
 import TrackStream from '@/entities/TrackStream';
 import Video from '@/entities/Video';

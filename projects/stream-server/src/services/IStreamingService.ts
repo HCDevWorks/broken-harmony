@@ -1,4 +1,4 @@
-import IObserver from '@/core/IObserver';
+import IObserver from '@/core/observer/IObserver';
 import LiveStream, { LiveStreamEvents } from '@/entities/LiveStream';
 import { ChildProcessWithoutNullStreams } from 'child_process';
 
