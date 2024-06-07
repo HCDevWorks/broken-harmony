@@ -1,25 +1,24 @@
+import Stream from '@/entities/Stream';
 import Logger from '@/helpers/Logger';
 import IStreamingService from '@/services/IStreamingService';
-import env from '@main/config/env';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import ffmpegPath from 'ffmpeg-static';
 
 export default class FFMPEGStreamingService implements IStreamingService {
   private ffmpegProcess?: ChildProcessWithoutNullStreams;
+  private stream?: Stream;
 
-  start(
-    videoSource: string,
-    audioSource: string,
-  ): ChildProcessWithoutNullStreams {
+  start(): ChildProcessWithoutNullStreams {
+    if (!this.stream) throw new Error('No stream');
     if (!ffmpegPath) throw new Error('Without ffmpeg');
 
     // prettier-ignore
     this.ffmpegProcess = spawn(ffmpegPath, [
     '-re',
     '-stream_loop', '-1',
-    '-i', videoSource,
+    '-i', this.stream.getVideo(),
     '-stream_loop', '-1',
-    '-i', audioSource,
+    '-i', this.stream.getTrack(),
     '-c:v', 'libx264',
     '-preset', 'veryfast',
     '-tune', 'zerolatency',
@@ -39,7 +38,7 @@ export default class FFMPEGStreamingService implements IStreamingService {
     '-b:a', '128k',
     '-ar', '44100',
     '-f', 'flv',
-    env.STREAM_URL,
+    this.stream.streamUrl,
   ]);
 
     this.ffmpegProcess.stdout.on('data', (data) =>
@@ -59,5 +58,14 @@ export default class FFMPEGStreamingService implements IStreamingService {
     if (this.ffmpegProcess) {
       this.ffmpegProcess.kill();
     }
+  }
+
+  update(): void {
+    this.stop();
+    this.start();
+  }
+
+  bind(stream: Stream) {
+    this.stream = stream;
   }
 }
