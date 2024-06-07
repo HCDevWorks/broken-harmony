@@ -18,7 +18,6 @@ export default class StreamingController {
   }
 
   setVideo(req: Request, res: Response) {
-    console.log(this);
     const { newVideoSource } = req.body;
     if (newVideoSource) {
       this.currentVideoSource = newVideoSource;

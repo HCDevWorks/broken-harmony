@@ -1,4 +1,5 @@
 import setupApp from '@/@main/config/app';
+import { StreamingControllerShared } from '@/@main/shared/StreamingControllerShared';
 import env from '@main/config/env';
 
 (async () => {
@@ -6,5 +7,6 @@ import env from '@main/config/env';
 
   app.listen(env.PORT, () => {
     console.log(`Server is running on http://localhost:${env.PORT}`);
+    StreamingControllerShared.start();
   });
 })();
