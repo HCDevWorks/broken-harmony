@@ -9,7 +9,7 @@ export default class StreamingController {
   constructor(readonly streamingService: IStreamingService) {
     this.stream = Stream.create(
       './samples/lofi.gif',
-      './samples/stomach.mp3',
+      './samples/music.mp3',
       env.STREAM_URL,
     );
     this.stream.subscribe(this.streamingService);
