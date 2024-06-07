@@ -1,3 +1,4 @@
+import env from '@main/config/env';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import ffmpegPath from 'ffmpeg-static';
 
@@ -38,7 +39,7 @@ function startStreaming(
     '-b:a', '128k',
     '-ar', '44100',
     '-f', 'flv',
-    'rtmp://a.rtmp.youtube.com/live2/4wdk-7eq7-s3eg-2ga8-00u4'
+    env.STREAM_URL,
   ]);
 
   ffmpegProcess.stdout.on('data', onOutput);
