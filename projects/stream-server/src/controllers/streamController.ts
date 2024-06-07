@@ -1,4 +1,5 @@
-const ffmpegService = require('../src/services/ffmpegService');
+import ffmpegService from '@/services/ffmpegService';
+import { Request, Response } from 'express';
 
 let currentVideoSource = './samples/lofi.gif';
 let currentAudioSource = './samples/stomach.mp3';
@@ -9,11 +10,11 @@ function startInitialStreaming() {
     currentAudioSource,
     (data) => console.log(`stdout: ${data}`),
     (data) => console.error(`stderr: ${data}`),
-    (code) => console.log(`ffmpeg process exited with code ${code}`)
+    (code) => console.log(`ffmpeg process exited with code ${code}`),
   );
 }
 
-function changeVideoSource(req, res) {
+function changeVideoSource(req: Request, res: Response) {
   const { newVideoSource } = req.body;
   if (newVideoSource) {
     currentVideoSource = newVideoSource;
@@ -25,7 +26,7 @@ function changeVideoSource(req, res) {
   }
 }
 
-function changeAudioSource(req, res) {
+function changeAudioSource(req: Request, res: Response) {
   const { newAudioSource } = req.body;
   if (newAudioSource) {
     currentAudioSource = newAudioSource;
@@ -37,4 +38,4 @@ function changeAudioSource(req, res) {
   }
 }
 
-module.exports = { startInitialStreaming, changeVideoSource, changeAudioSource };
+export default { startInitialStreaming, changeVideoSource, changeAudioSource };

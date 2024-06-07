@@ -1,9 +1,18 @@
-const { spawn } = require('child_process');
-const ffmpegPath = require('ffmpeg-static');
+import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+import ffmpegPath from 'ffmpeg-static';
 
-let ffmpegProcess;
+let ffmpegProcess: ChildProcessWithoutNullStreams;
 
-function startStreaming(videoSource, audioSource, onOutput, onError, onClose) {
+function startStreaming(
+  videoSource: string,
+  audioSource: string,
+  onOutput: (log: string) => void,
+  onError: (log: string) => void,
+  onClose: (log: string) => void,
+) {
+  if (!ffmpegPath) throw new Error('Without ffmpeg');
+
+  // prettier-ignore
   ffmpegProcess = spawn(ffmpegPath, [
     '-re',
     '-stream_loop', '-1',
@@ -45,4 +54,4 @@ function stopStreaming() {
   }
 }
 
-module.exports = { startStreaming, stopStreaming };
+export default { startStreaming, stopStreaming };
