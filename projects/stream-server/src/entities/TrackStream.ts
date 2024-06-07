@@ -1,3 +1,4 @@
+import Playlist from '@/entities/Playlist';
 import { createReadStream } from 'fs';
 import { PassThrough, Readable, Transform, Writable } from 'stream';
 
@@ -6,17 +7,17 @@ export default class TrackStream {
   private audioSource?: Readable;
   private stdin?: Writable;
 
-  constructor(private source: string) {
+  constructor(private playlist: Playlist) {
     this.audioStream = new PassThrough();
   }
 
-  static create(source: string) {
-    return new TrackStream(source);
+  static create(playlist: Playlist) {
+    return new TrackStream(playlist);
   }
 
   pipe(stdin: Writable) {
     this.stdin = stdin;
-    this.startSource(this.source);
+    this.startSource(this.playlist.actualTrack()!.trackSource);
   }
 
   startSource(source: string) {
@@ -24,7 +25,8 @@ export default class TrackStream {
     if (this.audioSource) this.audioSource.destroy();
 
     this.audioSource = createReadStream(source).on('end', () => {
-      this.startSource('./samples/music.mp3');
+      this.playlist.nextTrack();
+      this.startSource(this.playlist.actualTrack()!.trackSource);
     });
     this.audioSource.pipe(this.audioStream, { end: false });
 

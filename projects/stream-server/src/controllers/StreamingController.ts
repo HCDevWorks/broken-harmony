@@ -16,6 +16,8 @@ export default class StreamingController {
     this.streamingService.bind(this.stream);
     this.setVideo = this.setVideo.bind(this);
     this.setAudio = this.setAudio.bind(this);
+    this.stream.addTrack('./samples/chapeu.mp3');
+    this.stream.addTrack('./samples/music.mp3');
   }
 
   start() {
@@ -36,7 +38,7 @@ export default class StreamingController {
   setAudio(req: Request, res: Response) {
     const { newAudioSource } = req.body;
     try {
-      this.stream.setTrack(newAudioSource);
+      this.stream.addTrack(newAudioSource);
       res.send('Audio source changed successfully');
     } catch {
       res.status(400).send('New audio source is required');
