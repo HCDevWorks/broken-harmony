@@ -24,10 +24,11 @@ export default class StreamingController {
 
   setVideo(req: Request, res: Response) {
     const { newVideoSource } = req.body;
-    if (newVideoSource) {
+
+    try {
       this.stream.setVideo(newVideoSource);
       res.send('Video source changed successfully');
-    } else {
+    } catch {
       res.status(400).send('New video source is required');
     }
   }
