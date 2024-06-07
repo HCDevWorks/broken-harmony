@@ -3,7 +3,6 @@ import ILogger from '@/helpers/ILogger';
 import IStreamingService from '@/services/IStreamingService';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import ffmpegPath from 'ffmpeg-static';
-import { createReadStream } from 'fs';
 
 export default class FFMPEGStreamingService implements IStreamingService {
   private ffmpegProcess?: ChildProcessWithoutNullStreams;
@@ -44,8 +43,7 @@ export default class FFMPEGStreamingService implements IStreamingService {
     this.stream.streamUrl,
   ], { stdio: ['pipe', 'pipe', 'pipe'] });
 
-    const videoStream = createReadStream(this.stream.getTrackSource());
-    videoStream.pipe(this.ffmpegProcess.stdin);
+    this.stream.trackStream.pipe(this.ffmpegProcess.stdin);
 
     this.ffmpegProcess.stdout.on('data', (data) =>
       this.logger.log(`stdout: ${data}`),

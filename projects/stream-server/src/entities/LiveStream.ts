@@ -1,16 +1,20 @@
 import Observable from '@/core/Observable';
 import Track from '@/entities/Track';
+import TrackStream from '@/entities/TrackStream';
 import Video from '@/entities/Video';
 
 export type LiveStreamEvents = 'audio' | 'video';
 
 export default class LiveStream extends Observable<LiveStreamEvents> {
+  readonly trackStream: TrackStream;
+
   constructor(
     private video: Video,
-    private track: Track,
+    private actualTrack: Track,
     readonly streamUrl: string,
   ) {
     super();
+    this.trackStream = TrackStream.create(this.actualTrack.trackSource);
   }
 
   static create(videoSource: string, trackSource: string, streamUrl: string) {
@@ -24,7 +28,7 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
   }
 
   getTrackSource() {
-    return this.track.trackSource;
+    return this.actualTrack.trackSource;
   }
 
   setVideo(videoSource: string) {
@@ -35,7 +39,7 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
 
   setTrack(trackSource: string) {
     const track = Track.create(trackSource);
-    this.track = track;
+    this.actualTrack = track;
     this.notifyAll('audio');
   }
 }
