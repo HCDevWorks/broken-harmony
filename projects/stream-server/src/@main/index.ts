@@ -1,7 +1,10 @@
-import app from '@main/config/app';
+import setupApp from '@/@main/config/app';
+import env from '@main/config/env';
 
-const port = 3000;
+(async () => {
+  const app = await setupApp();
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+  app.listen(env.PORT, () => {
+    console.log(`Server is running on http://localhost:${env.PORT}`);
+  });
+})();
