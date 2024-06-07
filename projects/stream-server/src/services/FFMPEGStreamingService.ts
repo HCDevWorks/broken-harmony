@@ -1,4 +1,4 @@
-import Stream from '@/entities/Stream';
+import LiveStream from '@/entities/LiveStream';
 import ILogger from '@/helpers/ILogger';
 import IStreamingService from '@/services/IStreamingService';
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
@@ -7,7 +7,7 @@ import { createReadStream } from 'fs';
 
 export default class FFMPEGStreamingService implements IStreamingService {
   private ffmpegProcess?: ChildProcessWithoutNullStreams;
-  private stream?: Stream;
+  private stream?: LiveStream;
 
   constructor(readonly logger: ILogger) {}
 
@@ -71,7 +71,7 @@ export default class FFMPEGStreamingService implements IStreamingService {
     this.start();
   }
 
-  bind(stream: Stream) {
+  bind(stream: LiveStream) {
     this.stream = stream;
   }
 }

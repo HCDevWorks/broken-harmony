@@ -1,13 +1,13 @@
-import Stream from '@/entities/Stream';
+import LiveStream from '@/entities/LiveStream';
 import IStreamingService from '@/services/IStreamingService';
 import env from '@main/config/env';
 import { Request, Response } from 'express';
 
 export default class StreamingController {
-  private stream: Stream;
+  private stream: LiveStream;
 
   constructor(readonly streamingService: IStreamingService) {
-    this.stream = Stream.create(
+    this.stream = LiveStream.create(
       './samples/lofi.gif',
       './samples/music.mp3',
       env.STREAM_URL,

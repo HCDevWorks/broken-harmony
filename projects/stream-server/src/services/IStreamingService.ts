@@ -1,9 +1,9 @@
 import IObserver from '@/core/IObserver';
-import Stream, { StreamEvents } from '@/entities/Stream';
+import LiveStream, { LiveStreamEvents } from '@/entities/LiveStream';
 import { ChildProcessWithoutNullStreams } from 'child_process';
 
-export default interface IStreamingService extends IObserver<StreamEvents> {
+export default interface IStreamingService extends IObserver<LiveStreamEvents> {
   start(): ChildProcessWithoutNullStreams;
   stop(): void;
-  bind(stream: Stream): void;
+  bind(stream: LiveStream): void;
 }

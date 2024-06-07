@@ -2,9 +2,9 @@ import Observable from '@/core/Observable';
 import Track from '@/entities/Track';
 import Video from '@/entities/Video';
 
-export type StreamEvents = 'audio' | 'video';
+export type LiveStreamEvents = 'audio' | 'video';
 
-export default class Stream extends Observable<StreamEvents> {
+export default class LiveStream extends Observable<LiveStreamEvents> {
   constructor(
     private video: Video,
     private track: Track,
@@ -16,7 +16,7 @@ export default class Stream extends Observable<StreamEvents> {
   static create(videoSource: string, trackSource: string, streamUrl: string) {
     const video = Video.create(videoSource);
     const track = Track.create(trackSource);
-    return new Stream(video, track, streamUrl);
+    return new LiveStream(video, track, streamUrl);
   }
 
   getVideoSource() {
