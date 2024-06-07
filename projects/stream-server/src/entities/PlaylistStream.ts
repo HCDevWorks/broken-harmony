@@ -2,7 +2,7 @@ import Playlist from '@/entities/Playlist';
 import { createReadStream } from 'fs';
 import { PassThrough, Readable, Transform, Writable } from 'stream';
 
-export default class TrackStream {
+export default class PlaylistStream {
   private audioStream: Transform;
   private audioSource?: Readable;
   private stdin?: Writable;
@@ -12,7 +12,7 @@ export default class TrackStream {
   }
 
   static create(playlist: Playlist) {
-    return new TrackStream(playlist);
+    return new PlaylistStream(playlist);
   }
 
   pipe(stdin: Writable) {
@@ -22,7 +22,7 @@ export default class TrackStream {
 
   startSource(source: string) {
     if (!this.stdin) throw new Error('no stdin');
-    if (this.audioSource) this.audioSource.destroy();
+    if (this.audioSource) this.audioSource.unpipe();
 
     this.audioSource = createReadStream(source).on('end', () => {
       this.playlist.nextTrack();
