@@ -1,35 +1,51 @@
+import IObserver from '@/core/observer/IObserver';
+import { QueueEvents } from '@/core/queue/ObservableQueue';
 import Playlist from '@/entities/Playlist';
 import { createReadStream } from 'fs';
-import { PassThrough, Readable, Transform, Writable } from 'stream';
+import { Readable } from 'stream';
 
-export default class PlaylistStream {
-  private audioStream: Transform;
-  private audioSource?: Readable;
-  private stdin?: Writable;
+export default class PlaylistStream
+  extends Readable
+  implements IObserver<QueueEvents>
+{
+  private currentTrackStream: Readable | null = null;
+  private isReading: boolean = true;
 
   constructor(private playlist: Playlist) {
-    this.audioStream = new PassThrough();
+    super();
+    this.playlist.subscribe(this);
   }
 
   static create(playlist: Playlist) {
     return new PlaylistStream(playlist);
   }
 
-  pipe(stdin: Writable) {
-    this.stdin = stdin;
-    this.startSource(this.playlist.actualTrack()!.trackSource);
+  _read() {
+    if (this.currentTrackStream === null) {
+      const track = this.playlist.nextTrack();
+      if (track !== null) {
+        this.currentTrackStream = createReadStream(track.trackSource);
+        this.currentTrackStream.on('data', (chunk) => {
+          if (!this.push(chunk)) {
+            this.currentTrackStream!.pause();
+          }
+        });
+        this.currentTrackStream.on('end', () => {
+          this.currentTrackStream = null;
+          this._read();
+        });
+      } else {
+        this.isReading = false;
+      }
+    } else {
+      this.isReading = true;
+      this.currentTrackStream.resume();
+    }
   }
 
-  startSource(source: string) {
-    if (!this.stdin) throw new Error('no stdin');
-    if (this.audioSource) this.audioSource.unpipe();
-
-    this.audioSource = createReadStream(source).on('end', () => {
-      this.playlist.nextTrack();
-      this.startSource(this.playlist.actualTrack()!.trackSource);
-    });
-    this.audioSource.pipe(this.audioStream, { end: false });
-
-    this.audioStream.pipe(this.stdin, { end: false });
+  update(event: QueueEvents): void {
+    if (event === 'add' && !this.isReading) {
+      this._read();
+    }
   }
 }

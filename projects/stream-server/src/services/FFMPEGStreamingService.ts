@@ -43,7 +43,11 @@ export default class FFMPEGStreamingService implements IStreamingService {
     this.stream.streamUrl,
   ], { stdio: ['pipe', 'pipe', 'pipe'] });
 
-    this.stream.trackStream.pipe(this.ffmpegProcess.stdin);
+    this.stream.trackStream
+      .on('data', (chunk) => {
+        console.log(chunk);
+      })
+      .pipe(this.ffmpegProcess.stdin, { end: false });
 
     this.ffmpegProcess.stdout.on('data', (data) =>
       this.logger.log(`stdout: ${data}`),

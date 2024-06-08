@@ -20,8 +20,7 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
 
   static create(videoSource: string, trackSource: string, streamUrl: string) {
     const video = Video.create(videoSource);
-    const track = Track.create(trackSource);
-    const playlist = Playlist.create(track);
+    const playlist = Playlist.create();
     return new LiveStream(video, playlist, streamUrl);
   }
 

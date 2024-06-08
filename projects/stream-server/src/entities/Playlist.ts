@@ -1,26 +1,20 @@
-import Queue from '@/core/queue/Queue';
+import ObservableQueue from '@/core/queue/ObservableQueue';
 import Track from '@/entities/Track';
 
-export default class Playlist extends Queue<Track> {
-  private _actualTrack: Track | null = null;
-
-  constructor(actualTrack: Track) {
+export default class Playlist extends ObservableQueue<Track> {
+  constructor() {
     super();
-    this._actualTrack = actualTrack;
   }
 
-  static create(track: Track) {
-    const playlist = new Playlist(track);
-    return playlist;
+  static create() {
+    return new Playlist();
   }
 
   actualTrack(): Track | null {
-    return this._actualTrack;
+    return this.peek();
   }
 
   nextTrack(): Track | null {
-    if (this.empty()) return null;
-    this._actualTrack = this.dequeue();
-    return this._actualTrack;
+    return this.dequeue();
   }
 }
