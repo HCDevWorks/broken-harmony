@@ -1,26 +1,27 @@
-import Observable from '@/core/Observable';
+import Observable from '@/core/observer/Observable';
+import Playlist from '@/entities/Playlist';
+import PlaylistStream from '@/entities/PlaylistStream';
 import Track from '@/entities/Track';
-import TrackStream from '@/entities/TrackStream';
 import Video from '@/entities/Video';
 
 export type LiveStreamEvents = 'audio' | 'video';
 
 export default class LiveStream extends Observable<LiveStreamEvents> {
-  readonly trackStream: TrackStream;
+  readonly trackStream: PlaylistStream;
 
   constructor(
     private video: Video,
-    private actualTrack: Track,
+    private playlist: Playlist,
     readonly streamUrl: string,
   ) {
     super();
-    this.trackStream = TrackStream.create(this.actualTrack.trackSource);
+    this.trackStream = PlaylistStream.create(this.playlist);
   }
 
   static create(videoSource: string, trackSource: string, streamUrl: string) {
     const video = Video.create(videoSource);
-    const track = Track.create(trackSource);
-    return new LiveStream(video, track, streamUrl);
+    const playlist = Playlist.create();
+    return new LiveStream(video, playlist, streamUrl);
   }
 
   getVideoSource() {
@@ -28,7 +29,7 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
   }
 
   getTrackSource() {
-    return this.actualTrack.trackSource;
+    return this.playlist.actualTrack()!.trackSource;
   }
 
   setVideo(videoSource: string) {
@@ -37,9 +38,8 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
     this.notifyAll('video');
   }
 
-  setTrack(trackSource: string) {
+  addTrack(trackSource: string) {
     const track = Track.create(trackSource);
-    this.actualTrack = track;
-    this.trackStream.startSource(this.actualTrack.trackSource);
+    this.playlist.enqueue(track);
   }
 }

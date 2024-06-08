@@ -1,4 +1,4 @@
-import Observer from '@/core/IObserver';
+import Observer from '@/core/observer/IObserver';
 
 export default class Observable<Event extends string> {
   private observers: Observer<Event>[] = [];
