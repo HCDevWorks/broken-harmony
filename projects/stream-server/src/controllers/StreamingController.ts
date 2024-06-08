@@ -13,7 +13,7 @@ export default class StreamingController {
     this.setVideo = this.setVideo.bind(this);
     this.setAudio = this.setAudio.bind(this);
     this.stream.addTrack('./samples/risada.mp3');
-    this.stream.addTrack('./samples/music.mp3');
+    // this.stream.addTrack('./samples/chapeu.mp3');
   }
 
   start() {

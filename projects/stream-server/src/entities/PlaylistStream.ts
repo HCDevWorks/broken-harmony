@@ -3,6 +3,7 @@ import { QueueEvents } from '@/core/queue/ObservableQueue';
 import Playlist from '@/entities/Playlist';
 import { createReadStream } from 'fs';
 import { Readable } from 'stream';
+import Track from './Track';
 
 export default class PlaylistStream
   extends Readable
@@ -36,6 +37,7 @@ export default class PlaylistStream
         });
       } else {
         this.isReading = false;
+        this.playlist.enqueue(Track.create('./samples/silence.mp3'));
       }
     } else {
       this.isReading = true;
