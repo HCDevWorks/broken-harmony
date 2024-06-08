@@ -7,11 +7,7 @@ export default class StreamingController {
   private stream: LiveStream;
 
   constructor(readonly streamingService: IStreamingService) {
-    this.stream = LiveStream.create(
-      './samples/lofi.gif',
-      './samples/risada.mp3',
-      env.STREAM_URL,
-    );
+    this.stream = LiveStream.create('./samples/lofi.gif', env.STREAM_URL);
     this.stream.subscribe(this.streamingService);
     this.streamingService.bind(this.stream);
     this.setVideo = this.setVideo.bind(this);
