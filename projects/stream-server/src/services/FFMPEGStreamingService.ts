@@ -28,7 +28,7 @@ export default class FFMPEGStreamingService implements IStreamingService {
     '-tune', 'zerolatency',
     '-profile:v', 'high',
     '-bf', '2',
-    '-g', '60',
+    '-g', '30',
     '-keyint_min', '60',
     '-sc_threshold', '0',
     '-b:v', '4500k',
