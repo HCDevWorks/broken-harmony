@@ -21,6 +21,8 @@ export default class FFMPEGStreamingService implements IStreamingService {
     '-i', this.stream.getVideoSource(),
     '-f', 'mp3',
     '-i', 'pipe:0',
+    '-map', '0:v',
+    '-map', '1:a',
     '-c:v', 'libx264',
     '-preset', 'veryfast',
     '-tune', 'zerolatency',
@@ -39,19 +41,12 @@ export default class FFMPEGStreamingService implements IStreamingService {
     '-c:a', 'aac',
     '-b:a', '128k',
     '-ar', '44100',
-    '-f', 'flv',
-    this.stream.streamUrl,
+    '-f', 'tee',
+    `[f=flv]${this.stream.streamUrl}|[f=flv]rtmp://localhost:1935/live/`
   ], { stdio: ['pipe', 'pipe', 'pipe'] });
 
-    this.stream.trackStream
-      .on('data', (chunk) => {
-        console.log(chunk);
-      })
-      .pipe(this.ffmpegProcess.stdin, { end: false });
+    this.stream.trackStream.pipe(this.ffmpegProcess.stdin, { end: false });
 
-    this.ffmpegProcess.stdout.on('data', (data) =>
-      this.logger.log(`stdout: ${data}`),
-    );
     this.ffmpegProcess.stderr.on('data', (data) =>
       this.logger.error(`stderr: ${data}`),
     );
