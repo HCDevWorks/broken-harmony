@@ -1,0 +1,21 @@
+{
+  "name": "@youtube-livestream/rtmp",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "tsx watch ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node-media-server": "^2.3.6",
+    "ffmpeg-static": "^5.2.0",
+    "node-media-server": "^2.7.0",
+    "rtmp.js": "^0.1.0"
+  },
+  "devDependencies": {
+    "@youtube-livestream/eslint-config": "workspace:^",
+    "tsx": "^4.12.1",
+    "typescript": "^5.4.5"
+  }
+}
