@@ -1,7 +1,12 @@
-import ObservableQueue from '@/core/queue/ObservableQueue';
+import Observable from '@/core/observer/Observable';
+import Queue from '@/core/queue/Queue';
 import Track from '@/entities/Track';
 
-export default class TrackQueue extends ObservableQueue<Track> {
+export type TrackQueueEvent = 'added' | 'removed';
+
+export default class TrackQueue extends Observable<TrackQueueEvent> {
+  private readonly trackQueue = new Queue<Track>();
+
   constructor() {
     super();
   }
@@ -11,10 +16,19 @@ export default class TrackQueue extends ObservableQueue<Track> {
   }
 
   actualTrack(): Track | null {
-    return this.peek();
+    return this.trackQueue.peek();
   }
 
   nextTrack(): Track | null {
-    return this.dequeue();
+    if (this.trackQueue.empty()) return null;
+    const element = this.trackQueue.dequeue();
+    if (!element) return null;
+    this.notifyAll('removed');
+    return element;
+  }
+
+  addTrack(track: Track) {
+    this.trackQueue.enqueue(track);
+    this.notifyAll('added');
   }
 }

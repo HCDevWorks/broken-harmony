@@ -40,6 +40,6 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
 
   addTrack(trackSource: string) {
     const track = Track.create(trackSource);
-    this.trackQueue.enqueue(track);
+    this.trackQueue.addTrack(track);
   }
 }
