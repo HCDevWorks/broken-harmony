@@ -1,5 +1,5 @@
 {
-  "name": "@youtube-livestream/rtmp",
+  "name": "@broken-harmony/rtmp",
   "version": "1.0.0",
   "scripts": {
     "dev": "tsx watch ./src/index.ts"
@@ -14,7 +14,7 @@
     "rtmp.js": "^0.1.0"
   },
   "devDependencies": {
-    "@youtube-livestream/eslint-config": "workspace:^",
+    "@broken-harmony/eslint-config": "workspace:^",
     "tsx": "^4.12.1",
     "typescript": "^5.4.5"
   }

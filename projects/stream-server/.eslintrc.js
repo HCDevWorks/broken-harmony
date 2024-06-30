@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ["@youtube-livestream/eslint-config/node.js"],
+  extends: ['@broken-harmony/eslint-config/node.js'],
 };
