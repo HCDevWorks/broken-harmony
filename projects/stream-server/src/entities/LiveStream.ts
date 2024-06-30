@@ -1,13 +1,13 @@
 import Observable from '@/core/observer/Observable';
-import PlaylistStream from '@/entities/PlaylistStream';
 import Track from '@/entities/Track';
 import TrackQueue from '@/entities/TrackQueue';
+import TrackQueueStream from '@/entities/TrackQueueStream';
 import Video from '@/entities/Video';
 
 export type LiveStreamEvents = 'audio' | 'video';
 
 export default class LiveStream extends Observable<LiveStreamEvents> {
-  readonly trackStream: PlaylistStream;
+  readonly trackStream: TrackQueueStream;
 
   constructor(
     private video: Video,
@@ -15,7 +15,7 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
     readonly streamUrl: string,
   ) {
     super();
-    this.trackStream = PlaylistStream.create(this.trackQueue);
+    this.trackStream = TrackQueueStream.create(this.trackQueue);
   }
 
   static create(videoSource: string, streamUrl: string) {

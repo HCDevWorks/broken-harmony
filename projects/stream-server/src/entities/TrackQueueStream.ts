@@ -5,7 +5,7 @@ import { createReadStream } from 'fs';
 import { Readable } from 'stream';
 import Track from './Track';
 
-export default class PlaylistStream
+export default class TrackQueueStream
   extends Readable
   implements IObserver<QueueEvents>
 {
@@ -18,7 +18,7 @@ export default class PlaylistStream
   }
 
   static create(playlist: Playlist) {
-    return new PlaylistStream(playlist);
+    return new TrackQueueStream(playlist);
   }
 
   _read() {
