@@ -1,13 +1,13 @@
 import ObservableQueue from '@/core/queue/ObservableQueue';
 import Track from '@/entities/Track';
 
-export default class Playlist extends ObservableQueue<Track> {
+export default class TrackQueue extends ObservableQueue<Track> {
   constructor() {
     super();
   }
 
   static create() {
-    return new Playlist();
+    return new TrackQueue();
   }
 
   actualTrack(): Track | null {

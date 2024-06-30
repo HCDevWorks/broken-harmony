@@ -1,6 +1,6 @@
 import IObserver from '@/core/observer/IObserver';
 import { QueueEvents } from '@/core/queue/ObservableQueue';
-import Playlist from '@/entities/Playlist';
+import Playlist from '@/entities/TrackQueue';
 import { createReadStream } from 'fs';
 import { Readable } from 'stream';
 import Track from './Track';
