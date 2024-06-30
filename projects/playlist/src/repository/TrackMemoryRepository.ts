@@ -1,65 +1,16 @@
 import Track from '@/entities/Track';
+import env from '@/main/config/env';
 import ITrackRepository, { TrackDto } from '@/repository/ITrackRepository';
 import { randomUUID } from 'crypto';
+import fs from 'fs';
+import path from 'path';
 
 export default class TrackMemoryRepository implements ITrackRepository {
-  private trackList: TrackDto[] = [
-    {
-      id: 'a',
-      source: 'teste',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'b',
-      source: 'teste1',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'c',
-      source: 'teste2',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'd',
-      source: 'teste3',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'e',
-      source: 'teste4',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'f',
-      source: 'teste5',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'g',
-      source: 'teste6',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'h',
-      source: 'teste7',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'i',
-      source: 'teste8',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'j',
-      source: 'teste9',
-      listenedAt: new Date(0),
-    },
-    {
-      id: 'k',
-      source: 'teste10',
-      listenedAt: new Date(0),
-    },
-  ];
+  constructor() {
+    this.loadTracksFromFolder(env.MUSIC_FOLDER);
+  }
+
+  private trackList: TrackDto[] = [];
 
   async add(track: Track): Promise<boolean> {
     this.trackList.push({
@@ -86,5 +37,22 @@ export default class TrackMemoryRepository implements ITrackRepository {
       track.listenedAt = new Date();
     }
     return true;
+  }
+
+  private loadTracksFromFolder(folderPath: string): void {
+    if (!fs.existsSync(folderPath)) {
+      console.error(`Pasta não encontrada: ${folderPath}`);
+      return;
+    }
+
+    const files = fs.readdirSync(folderPath);
+
+    files.forEach((file) => {
+      const trackSource = path.join(folderPath, file);
+      const track = Track.create(trackSource);
+      this.add(track);
+    });
+
+    console.log(`Carregadas ${files.length} tracks da pasta: ${folderPath}`);
   }
 }

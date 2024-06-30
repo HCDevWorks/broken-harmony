@@ -7,4 +7,5 @@ export default {
     .get('TRACKS_BY_RECOMMENDATION')
     .required()
     .asIntPositive(),
+  MUSIC_FOLDER: env.get('MUSIC_FOLDER').required().asString(),
 };
