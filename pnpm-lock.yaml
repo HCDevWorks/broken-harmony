@@ -42,6 +42,43 @@ importers:
         specifier: ^3.2.5
         version: 3.3.1
 
+  projects/playlist:
+    dependencies:
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
+      env-var:
+        specifier: ^7.5.0
+        version: 7.5.0
+      express:
+        specifier: ^4.19.2
+        version: 4.19.2
+    devDependencies:
+      '@broken-harmony/eslint-config':
+        specifier: workspace:^
+        version: link:../../packages/eslint-config
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/node':
+        specifier: ^20.14.2
+        version: 20.14.2
+      tsc-alias:
+        specifier: ^1.8.10
+        version: 1.8.10
+      tsx:
+        specifier: ^4.12.1
+        version: 4.12.1
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
+
   projects/rtmp:
     dependencies:
       '@types/node-media-server':
