@@ -1,5 +1,5 @@
 {
-  "name": "youtube-livestream",
+  "name": "broken-harmony",
   "version": "1.0.0",
   "description": "A POC Repo for test youtube livestream with code.",
   "author": "",
@@ -8,9 +8,9 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky",
-    "pre-commit": "pnpm run --filter \"@youtube-livestream/*\" pre-commit",
-    "lint": "pnpm run --filter \"@youtube-livestream/*\" lint",
-    "lint:fix": "pnpm run --filter \"@youtube-livestream/*\" lint:fix"
+    "pre-commit": "pnpm run --filter \"@broken-harmony/*\" pre-commit",
+    "lint": "pnpm run --filter \"@broken-harmony/*\" lint",
+    "lint:fix": "pnpm run --filter \"@broken-harmony/*\" lint:fix"
   },
   "workspaces": [
     "projects/*",

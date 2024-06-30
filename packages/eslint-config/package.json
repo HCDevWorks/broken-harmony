@@ -1,5 +1,5 @@
 {
-  "name": "@youtube-livestream/eslint-config",
+  "name": "@broken-harmony/eslint-config",
   "version": "1.0.0",
   "main": ".eslintrc.js",
   "private": true,
