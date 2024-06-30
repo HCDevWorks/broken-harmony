@@ -2,14 +2,8 @@ import Track from '@/entities/Track';
 import ITrackRepository, { TrackDto } from '@/repository/ITrackRepository';
 import { randomUUID } from 'crypto';
 
-interface TrackPersist {
-  id: string;
-  source: string;
-  listenedAt: Date;
-}
-
 export default class TrackMemoryRepository implements ITrackRepository {
-  private trackList: TrackPersist[] = [
+  private trackList: TrackDto[] = [
     {
       id: 'a',
       source: 'teste',
