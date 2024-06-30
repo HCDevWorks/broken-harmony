@@ -1,3 +1,4 @@
+import env from '@/main/config/env';
 import ITrackRepository, { TrackDto } from '@/repository/ITrackRepository';
 import IPlaylistService from '@/services/IPlaylistService';
 
@@ -14,7 +15,7 @@ export default class PlaylistService implements IPlaylistService {
         recommendedTracks.push(track);
         await this.trackRepository.updateListenedAt(track.id);
 
-        if (recommendedTracks.length >= 5) break;
+        if (recommendedTracks.length >= env.TRACKS_BY_RECOMMENDATION) break;
       }
     }
 
