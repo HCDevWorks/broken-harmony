@@ -1,4 +1,5 @@
 import LiveStream from '@/entities/LiveStream';
+import IPlaylistService from '@/services/IPlaylistService';
 import IStreamingService from '@/services/IStreamingService';
 import env from '@main/config/env';
 import { Request, Response } from 'express';
@@ -6,14 +7,19 @@ import { Request, Response } from 'express';
 export default class StreamingController {
   private stream: LiveStream;
 
-  constructor(readonly streamingService: IStreamingService) {
-    this.stream = LiveStream.create('./samples/lofi.gif', env.STREAM_URL);
+  constructor(
+    private readonly streamingService: IStreamingService,
+    private readonly playlistService: IPlaylistService,
+  ) {
+    this.stream = LiveStream.create(
+      './samples/lofi.gif',
+      env.STREAM_URL,
+      this.playlistService,
+    );
     this.stream.subscribe(this.streamingService);
     this.streamingService.bind(this.stream);
     this.setVideo = this.setVideo.bind(this);
     this.setAudio = this.setAudio.bind(this);
-    this.stream.addTrack('./samples/risada.mp3');
-    // this.stream.addTrack('./samples/chapeu.mp3');
   }
 
   start() {

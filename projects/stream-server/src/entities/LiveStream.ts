@@ -1,27 +1,44 @@
+import IObserver from '@/core/observer/IObserver';
 import Observable from '@/core/observer/Observable';
-import Playlist from '@/entities/Playlist';
-import PlaylistStream from '@/entities/PlaylistStream';
 import Track from '@/entities/Track';
+import TrackQueue, { TrackQueueEvent } from '@/entities/TrackQueue';
+import TrackQueueStream from '@/entities/TrackQueueStream';
 import Video from '@/entities/Video';
+import IPlaylistService from '@/services/IPlaylistService';
 
 export type LiveStreamEvents = 'audio' | 'video';
 
-export default class LiveStream extends Observable<LiveStreamEvents> {
-  readonly trackStream: PlaylistStream;
+export default class LiveStream
+  extends Observable<LiveStreamEvents>
+  implements IObserver<TrackQueueEvent>
+{
+  readonly trackStream: TrackQueueStream;
 
   constructor(
     private video: Video,
-    private playlist: Playlist,
+    private readonly trackQueue: TrackQueue,
     readonly streamUrl: string,
+    private readonly playlistService: IPlaylistService,
   ) {
     super();
-    this.trackStream = PlaylistStream.create(this.playlist);
+    this.trackQueue.subscribe(this);
+    this.trackStream = TrackQueueStream.create(this.trackQueue);
+    this.init();
   }
 
-  static create(videoSource: string, streamUrl: string) {
+  async init() {
+    const initialTracks = await this.playlistService.getRecommendations();
+    this.addPlaylist(initialTracks);
+  }
+
+  static create(
+    videoSource: string,
+    streamUrl: string,
+    playlistService: IPlaylistService,
+  ) {
     const video = Video.create(videoSource);
-    const playlist = Playlist.create();
-    return new LiveStream(video, playlist, streamUrl);
+    const trackQueue = TrackQueue.create();
+    return new LiveStream(video, trackQueue, streamUrl, playlistService);
   }
 
   getVideoSource() {
@@ -29,7 +46,7 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
   }
 
   getTrackSource() {
-    return this.playlist.actualTrack()!.trackSource;
+    return this.trackQueue.actualTrack()!.trackSource;
   }
 
   setVideo(videoSource: string) {
@@ -40,6 +57,16 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
 
   addTrack(trackSource: string) {
     const track = Track.create(trackSource);
-    this.playlist.enqueue(track);
+    this.trackQueue.addTrack(track);
+  }
+
+  private addPlaylist(tracks: Array<Track>) {
+    tracks.forEach((track) => this.trackQueue.addTrack(track));
+  }
+
+  async update(event: TrackQueueEvent): Promise<void> {
+    if (event === 'lastTrack') {
+      this.addPlaylist(await this.playlistService.getRecommendations());
+    }
   }
 }

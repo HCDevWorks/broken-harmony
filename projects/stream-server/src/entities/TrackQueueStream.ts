@@ -1,29 +1,28 @@
 import IObserver from '@/core/observer/IObserver';
-import { QueueEvents } from '@/core/queue/ObservableQueue';
-import Playlist from '@/entities/Playlist';
+import TrackQueue, { TrackQueueEvent } from '@/entities/TrackQueue';
 import { createReadStream } from 'fs';
 import { Readable } from 'stream';
 import Track from './Track';
 
-export default class PlaylistStream
+export default class TrackQueueStream
   extends Readable
-  implements IObserver<QueueEvents>
+  implements IObserver<TrackQueueEvent>
 {
   private currentTrackStream: Readable | null = null;
   private isReading: boolean = true;
 
-  constructor(private playlist: Playlist) {
+  constructor(private trackQueue: TrackQueue) {
     super();
-    this.playlist.subscribe(this);
+    this.trackQueue.subscribe(this);
   }
 
-  static create(playlist: Playlist) {
-    return new PlaylistStream(playlist);
+  static create(playlist: TrackQueue) {
+    return new TrackQueueStream(playlist);
   }
 
   _read() {
     if (this.currentTrackStream === null) {
-      const track = this.playlist.nextTrack();
+      const track = this.trackQueue.nextTrack();
       if (track !== null) {
         this.currentTrackStream = createReadStream(track.trackSource);
         this.currentTrackStream.on('data', (chunk) => {
@@ -37,7 +36,7 @@ export default class PlaylistStream
         });
       } else {
         this.isReading = false;
-        this.playlist.enqueue(Track.create('./samples/silence.mp3'));
+        this.trackQueue.addTrack(Track.create('./samples/silence.mp3'));
       }
     } else {
       this.isReading = true;
@@ -45,8 +44,8 @@ export default class PlaylistStream
     }
   }
 
-  update(event: QueueEvents): void {
-    if (event === 'add' && !this.isReading) {
+  update(event: TrackQueueEvent): void {
+    if (event === 'added' && !this.isReading) {
       this._read();
     }
   }
