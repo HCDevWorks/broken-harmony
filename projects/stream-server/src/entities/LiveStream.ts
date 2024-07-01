@@ -4,6 +4,7 @@ import Track from '@/entities/Track';
 import TrackQueue, { TrackQueueEvent } from '@/entities/TrackQueue';
 import TrackQueueStream from '@/entities/TrackQueueStream';
 import Video from '@/entities/Video';
+import IPlaylistService from '@/services/IPlaylistService';
 
 export type LiveStreamEvents = 'audio' | 'video';
 
@@ -15,18 +16,29 @@ export default class LiveStream
 
   constructor(
     private video: Video,
-    private trackQueue: TrackQueue,
+    private readonly trackQueue: TrackQueue,
     readonly streamUrl: string,
+    private readonly playlistService: IPlaylistService,
   ) {
     super();
     this.trackQueue.subscribe(this);
     this.trackStream = TrackQueueStream.create(this.trackQueue);
+    this.init();
   }
 
-  static create(videoSource: string, streamUrl: string) {
+  async init() {
+    const initialTracks = await this.playlistService.getRecommendations();
+    this.addPlaylist(initialTracks);
+  }
+
+  static create(
+    videoSource: string,
+    streamUrl: string,
+    playlistService: IPlaylistService,
+  ) {
     const video = Video.create(videoSource);
     const trackQueue = TrackQueue.create();
-    return new LiveStream(video, trackQueue, streamUrl);
+    return new LiveStream(video, trackQueue, streamUrl, playlistService);
   }
 
   getVideoSource() {
@@ -46,6 +58,10 @@ export default class LiveStream
   addTrack(trackSource: string) {
     const track = Track.create(trackSource);
     this.trackQueue.addTrack(track);
+  }
+
+  private addPlaylist(tracks: Array<Track>) {
+    tracks.forEach((track) => this.trackQueue.addTrack(track));
   }
 
   update(event: TrackQueueEvent): void {
