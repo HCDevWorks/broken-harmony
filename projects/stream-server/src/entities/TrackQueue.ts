@@ -2,7 +2,7 @@ import Observable from '@/core/observer/Observable';
 import Queue from '@/core/queue/Queue';
 import Track from '@/entities/Track';
 
-export type TrackQueueEvent = 'added' | 'removed';
+export type TrackQueueEvent = 'added' | 'removed' | 'lastTrack';
 
 export default class TrackQueue extends Observable<TrackQueueEvent> {
   private readonly trackQueue = new Queue<Track>();
@@ -24,6 +24,9 @@ export default class TrackQueue extends Observable<TrackQueueEvent> {
     const element = this.trackQueue.dequeue();
     if (!element) return null;
     this.notifyAll('removed');
+    if (this.trackQueue.size() === 0) {
+      this.notifyAll('lastTrack');
+    }
     return element;
   }
 

@@ -1,12 +1,16 @@
+import IObserver from '@/core/observer/IObserver';
 import Observable from '@/core/observer/Observable';
 import Track from '@/entities/Track';
-import TrackQueue from '@/entities/TrackQueue';
+import TrackQueue, { TrackQueueEvent } from '@/entities/TrackQueue';
 import TrackQueueStream from '@/entities/TrackQueueStream';
 import Video from '@/entities/Video';
 
 export type LiveStreamEvents = 'audio' | 'video';
 
-export default class LiveStream extends Observable<LiveStreamEvents> {
+export default class LiveStream
+  extends Observable<LiveStreamEvents>
+  implements IObserver<TrackQueueEvent>
+{
   readonly trackStream: TrackQueueStream;
 
   constructor(
@@ -15,6 +19,7 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
     readonly streamUrl: string,
   ) {
     super();
+    this.trackQueue.subscribe(this);
     this.trackStream = TrackQueueStream.create(this.trackQueue);
   }
 
@@ -41,5 +46,9 @@ export default class LiveStream extends Observable<LiveStreamEvents> {
   addTrack(trackSource: string) {
     const track = Track.create(trackSource);
     this.trackQueue.addTrack(track);
+  }
+
+  update(event: TrackQueueEvent): void {
+    if (event === 'lastTrack') console.log('last');
   }
 }

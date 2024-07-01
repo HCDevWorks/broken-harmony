@@ -1,5 +1,6 @@
 export default class Queue<ElementType> {
   private elements: ElementType[] = [];
+
   enqueue(element: ElementType) {
     this.elements.push(element);
   }
@@ -20,5 +21,9 @@ export default class Queue<ElementType> {
 
   empty(): boolean {
     return this.elements.length === 0;
+  }
+
+  size(): number {
+    return this.elements.length;
   }
 }
