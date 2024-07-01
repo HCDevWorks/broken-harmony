@@ -64,7 +64,9 @@ export default class LiveStream
     tracks.forEach((track) => this.trackQueue.addTrack(track));
   }
 
-  update(event: TrackQueueEvent): void {
-    if (event === 'lastTrack') console.log('last');
+  async update(event: TrackQueueEvent): Promise<void> {
+    if (event === 'lastTrack') {
+      this.addPlaylist(await this.playlistService.getRecommendations());
+    }
   }
 }
