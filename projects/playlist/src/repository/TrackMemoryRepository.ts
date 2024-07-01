@@ -39,7 +39,12 @@ export default class TrackMemoryRepository implements ITrackRepository {
     return true;
   }
 
-  private loadTracksFromFolder(folderPath: string): void {
+  async reload(): Promise<boolean> {
+    await this.loadTracksFromFolder(env.MUSIC_FOLDER);
+    return true;
+  }
+
+  private async loadTracksFromFolder(folderPath: string): Promise<void> {
     if (!fs.existsSync(folderPath)) {
       console.error(`Pasta não encontrada: ${folderPath}`);
       return;

@@ -11,4 +11,5 @@ export default interface ITrackRepository {
   get(): Promise<Array<TrackDto>>;
   getRecentTracks(): Promise<Array<TrackDto>>;
   updateListenedAt(id: string): Promise<boolean>;
+  reload(): Promise<boolean>;
 }
