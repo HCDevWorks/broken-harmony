@@ -25,7 +25,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.14.9",
     "@youtube-livestream/eslint-config": "workspace:^",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.12.1",
