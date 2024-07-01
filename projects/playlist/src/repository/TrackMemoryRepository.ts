@@ -1,13 +1,12 @@
 import Track from '@/entities/Track';
-import env from '@/main/config/env';
 import ITrackRepository, { TrackDto } from '@/repository/ITrackRepository';
 import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
 export default class TrackMemoryRepository implements ITrackRepository {
-  constructor() {
-    this.loadTracksFromFolder(env.MUSIC_FOLDER);
+  constructor(private readonly musicFolder: string) {
+    this.reload();
   }
 
   private trackList: TrackDto[] = [];
@@ -40,7 +39,7 @@ export default class TrackMemoryRepository implements ITrackRepository {
   }
 
   async reload(): Promise<boolean> {
-    await this.loadTracksFromFolder(env.MUSIC_FOLDER);
+    await this.loadTracksFromFolder(this.musicFolder);
     return true;
   }
 
