@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@youtube-livestream/eslint-config": "workspace:^",
-    "tsx": "^4.12.1",
+    "tsx": "^4.16.5",
     "typescript": "^5.5.3"
   }
 }
