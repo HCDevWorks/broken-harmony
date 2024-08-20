@@ -88,8 +88,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0
       googleapis:
-        specifier: ^139.0.0
-        version: 139.0.0(encoding@0.1.13)
+        specifier: ^142.0.0
+        version: 142.0.0(encoding@0.1.13)
       node-gyp:
         specifier: ^10.1.0
         version: 10.1.0
@@ -1202,8 +1202,8 @@ packages:
     resolution: {integrity: sha512-/fhDZEJZvOV3X5jmD+fKxMqma5q2Q9nZNSF3kn1F18tpxmA86BcTxAGBQdM0N89Z3bEaIs+HVznSmFJEAmMTjA==}
     engines: {node: '>=14.0.0'}
 
-  googleapis@139.0.0:
-    resolution: {integrity: sha512-sBBCyTJOo8l2DtLZaLWbjIvuLC0HcQt3+JXpEKhYS1JXXhA/wGjBHXxHQ5UwJB0rlBhO53k/OUXug0/gfKCtBw==}
+  googleapis@142.0.0:
+    resolution: {integrity: sha512-LsU1ynez4/KNPwnFMSDI93pBEsETNdQPCrT3kz2qgiNg5H2pW4dKW+1VmENMkZ4u9lMxA89nnXD3nqWBJ0rruQ==}
     engines: {node: '>=14.0.0'}
 
   gopd@1.0.1:
@@ -3468,7 +3468,7 @@ snapshots:
       - encoding
       - supports-color
 
-  googleapis@139.0.0(encoding@0.1.13):
+  googleapis@142.0.0(encoding@0.1.13):
     dependencies:
       google-auth-library: 9.10.0(encoding@0.1.13)
       googleapis-common: 7.2.0(encoding@0.1.13)
