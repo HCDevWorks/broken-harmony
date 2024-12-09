@@ -61,8 +61,8 @@ importers:
         specifier: workspace:^
         version: link:../../packages/eslint-config
       tsx:
-        specifier: ^4.17.0
-        version: 4.17.0
+        specifier: ^4.19.2
+        version: 4.19.2
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -116,8 +116,8 @@ importers:
         specifier: ^1.8.10
         version: 1.8.10
       tsx:
-        specifier: ^4.17.0
-        version: 4.17.0
+        specifier: ^4.19.2
+        version: 4.19.2
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -2148,8 +2148,8 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
-  tsx@4.17.0:
-    resolution: {integrity: sha512-eN4mnDA5UMKDt4YZixo9tBioibaMBpoxBkD+rIPAjVmYERSG0/dWEY1CEFuV89CgASlKL499q8AhmkMnnjtOJg==}
+  tsx@4.19.2:
+    resolution: {integrity: sha512-pOUl6Vo2LUq/bSa8S5q7b91cgNSjctn9ugq/+Mvow99qW6x/UZYwzxy/3NmqoT66eHYfCVvFvACC58UBPFf28g==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -4491,7 +4491,7 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tsx@4.17.0:
+  tsx@4.19.2:
     dependencies:
       esbuild: 0.23.0
       get-tsconfig: 4.7.5
