@@ -28,7 +28,7 @@
     "@types/node": "^22.8.1",
     "@youtube-livestream/eslint-config": "workspace:^",
     "tsc-alias": "^1.8.10",
-    "tsx": "^4.17.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.5.4"
   }
 }
