@@ -10,7 +10,7 @@
   "dependencies": {
     "@types/node-media-server": "^2.3.6",
     "ffmpeg-static": "^5.2.0",
-    "node-media-server": "^2.7.0",
+    "node-media-server": "^4.0.7",
     "rtmp.js": "^0.1.0"
   },
   "devDependencies": {
